@@ -48,6 +48,17 @@ Browser (app/page.tsx)
 Chunking (`lib/chunker.ts`) is a direct line-for-line port of the CLI's
 `core/chunker.py` — same balanced-splitting algorithm, same behavior.
 
+## ⚠️ Before every deploy: check for Next.js/React security patches
+
+Next.js and React have been through a serious, ongoing security saga since December 2025 — starting with a CVSS 10.0 unauthenticated RCE in the App Router's React Server Components protocol (CVE-2025-55182 / CVE-2025-66478), followed by several more rounds of high-severity DoS, SSRF, and cache-poisoning fixes roughly **monthly** since (Next.js has since formalized this into a scheduled monthly security-release program). This isn't a one-time fix.
+
+`package.json` here uses caret ranges (`^15.5.21`, `^19.2.6`) rather than exact pins specifically so `npm install` picks up new patch releases automatically — the original version of this file exact-pinned `next@15.1.6`, which is exactly why a real `vercel build` log surfaced a CVE warning during review. **Don't repeat that mistake**: never exact-pin `next`/`react`/`react-dom` in this project.
+
+Even so, caret ranges only help within the same minor-version line and only if you re-run `npm install` reasonably often — they won't save you if you deploy once and never touch the project again while new CVEs pile up. Before any deploy that matters:
+1. Check https://nextjs.org/blog for the latest security release.
+2. Run `npm outdated` / `npm update` (or Vercel's official `npx fix-react2shell-next` tool) to confirm you're on the current patched line.
+3. If it's been a while since your last deploy, assume you're behind and update first.
+
 ## Deploying to Vercel
 
 1. **Push this folder to a GitHub repo**, then import it in Vercel
