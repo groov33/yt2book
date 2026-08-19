@@ -1,0 +1,21 @@
+{
+  "functions": {
+    "app/api/render-pdf/route.ts": {
+      "memory": 1536,
+      "maxDuration": 60
+    },
+    "app/api/compile-master/route.ts": {
+      "memory": 1024,
+      "maxDuration": 60
+    },
+    "app/api/generate-chapter/route.ts": {
+      "maxDuration": 60
+    },
+    "app/api/metadata/route.ts": {
+      "maxDuration": 30
+    },
+    "app/api/transcript/route.ts": {
+      "maxDuration": 30
+    }
+  }
+}
